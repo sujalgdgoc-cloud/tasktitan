@@ -30,7 +30,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Login Screen</b><br><br>
-  <img src="assets/images/login.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.39%20PM.jpeg" width="200"/>
 </p>
 
 ---
@@ -52,7 +52,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Sign Up Screen</b><br><br>
-  <img src="assets/images/signup.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.39%20PM%20(2).jpeg" width="200"/>
 </p>
 
 ---
@@ -70,7 +70,8 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Dashboard Redirect</b><br><br>
-  <img src="assets/images/dashboard.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.41%20PM%20(1).jpeg" width="200"/><br>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.41%20PM%20(2).jpeg" width="200"/>
 </p>
 
 ---
@@ -95,7 +96,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Requester Dashboard</b><br><br>
-  <img src="assets/images/requester_dashboard.png" width="600"/>
+   <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.41%20PM%20(2).jpeg" width="200"/>
 </p>
 
 ---
@@ -112,7 +113,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Post Request</b><br><br>
-  <img src="assets/images/post_request.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.42%20PM%20(2).jpeg" width="200"/>
 </p>
 
 ---
@@ -129,7 +130,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Requests List</b><br><br>
-  <img src="assets/images/request_list.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.43%20PM%20(1).jpeg" width="200"/>
 </p>
 
 ---
@@ -147,7 +148,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Bid Management</b><br><br>
-  <img src="assets/images/bids.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.48%20PM%20(2).jpeg" width="200"/>
 </p>
 
 ---
@@ -161,7 +162,8 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Progress Tracking</b><br><br>
-  <img src="assets/images/progress.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.47%20PM%20(1).jpeg" width="200"/>
+   <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.48%20PM%20(1).jpeg" width="200"/>
 </p>
 
 ---
@@ -180,7 +182,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Marketplace</b><br><br>
-  <img src="assets/images/marketplace.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.45%20PM%20(2).jpeg" width="200"/>
 </p>
 
 ---
@@ -196,7 +198,9 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Request Details</b><br><br>
-  <img src="assets/images/details.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.44%20PM%20(1).jpeg" width="200"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.44%20PM%20(2).jpeg" width="200"/>
+  
 </p>
 
 ---
@@ -213,7 +217,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Bidding</b><br><br>
-  <img src="assets/images/bidding.png" width="600"/>
+<img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.45%20PM.jpeg" width="200"/>
 </p>
 
 ---
@@ -227,7 +231,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Won Tasks</b><br><br>
-  <img src="assets/images/won_tasks.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.45%20PM%20(1).jpeg" width="200"/>
 </p>
 
 ---
@@ -241,7 +245,9 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Start Work</b><br><br>
-  <img src="assets/images/start.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.46%20PM%20(1).jpeg" width="200"/>
+   <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.46%20PM%20(2).jpeg" width="200"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.46%20PM%20(3).jpeg" width="200"/>
 </p>
 
 ---
@@ -257,7 +263,7 @@ Task Titan is a **role-based task marketplace app** where:
 
 <p align="center">
   <b>📷 Completion</b><br><br>
-  <img src="assets/images/complete.png" width="600"/>
+  <img src="https://github.com/sujalgdgoc-cloud/tasktitan/blob/main/lib/theme_data/WhatsApp%20Image%202026-03-22%20at%206.56.48%20PM.jpeg" width="200"/>
 </p>
 
 ---
