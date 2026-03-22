@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "999445358427",
+    "project_id": "tasktitan-4942a",
+    "storage_bucket": "tasktitan-4942a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999445358427:android:a029343a4a856a22931c7e",
+        "android_client_info": {
+          "package_name": "com.example.task_titan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf0jleS8Aua6x0kRo9kTmYEjXgLHQCiWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
