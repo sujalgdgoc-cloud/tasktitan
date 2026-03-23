@@ -28,35 +28,4 @@ class ThemeController extends GetxController {
 
     Get.changeThemeMode(isDark.value ? ThemeMode.dark : ThemeMode.light);
   }
-  ThemeData darkMode = ThemeData(
-    brightness: Brightness.dark,
-
-    scaffoldBackgroundColor: const Color(0xFF0F172A),
-    cardColor: const Color(0xFF1E293B),
-
-    primaryColor: const Color(0xFF38BDF8),
-
-    colorScheme: const ColorScheme.dark(
-      primary: Color(0xFF38BDF8),
-      secondary: Color(0xFF22C55E),
-    ),
-
-    iconTheme: const IconThemeData(
-      color: Colors.white,
-    ),
-
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF0F172A),
-      foregroundColor: Colors.white,
-    ),
-
-    textTheme: const TextTheme(
-      bodyMedium: TextStyle(color: Color(0xFFE2E8F0)), // ✅ FIX
-      bodySmall: TextStyle(color: Color(0xFF94A3B8)),
-      titleLarge: TextStyle(
-        color: Color(0xFFE2E8F0),
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  );
 }
