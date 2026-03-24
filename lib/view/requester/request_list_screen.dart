@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -228,12 +229,12 @@ class _RequestListScreenState extends State<RequestListScreen> {
 
           final data =
           snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
-
+          final currentUid = FirebaseAuth.instance.currentUser!.uid;
           final List requests = data.entries.map((entry) {
             final value = Map<String, dynamic>.from(entry.value);
             value['id'] = entry.key;
             return value;
-          }).toList();
+          }).where((req) => req['uid'] == currentUid).toList();
 
           return ListView.builder(
             padding: const EdgeInsets.all(16),

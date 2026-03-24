@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -13,12 +14,13 @@ class BidingRequest {
         .ref('request')
         .child(requestId)
         .child('bids');
-
+    final uid = FirebaseAuth.instance.currentUser!.uid;
     final newBid = ref.push();
 
     await newBid.set({
       "name": name,
-      "bid": bid
+      "bid": bid,
+      "uid": uid,
     });
   }
 }

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_titan/auth/signInScreen.dart';
 import 'package:task_titan/view/requester/requestor_dashBoard.dart';
 import 'package:task_titan/view/solver/slover_dashBoard.dart';
 import '../service/auth_service.dart';
+import '../view/solver/solverprofilesetupscreen.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,30 +34,88 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void login() async {
 
-    String? result = await _authService.login(
-        email: email.text,
-        password: password.text
+    final result = await _authService.login(
+      email: email.text,
+      password: password.text,
     );
+    String role = result!["role"];
+    bool profileCompleted = result["profileCompleted"];
+    if (role == "Solver") {
 
-    if (result == "Solver") {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>  SloverDashboard(),
-        ),
-      );
+      if (!profileCompleted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SolverProfileSetupScreen()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SloverDashboard()),
+        );
+      }
+
     }
-    else if (result == "Requester") {
+    else if (role == "Requester") {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) =>  RequestorDashboard(),
-        ),
+        MaterialPageRoute(builder: (context) => RequestorDashboard()),
       );
     }
     else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login failed: $result")),
+        SnackBar(content: Text("Login failed: $role")),
+      );
+    }
+  }
+  void googleLogin() async {
+    String? result = await _authService.googleLogin();
+
+    if (result == "NEW_USER") {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          backgroundColor: const Color(0xFF1E293B),
+          title: const Text("Select Role",
+              style: TextStyle(color: textColor)),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await _authService.saveUserRole("Solver");
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => SloverDashboard()),
+                );
+              },
+              child: const Text("Solver"),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _authService.saveUserRole("Requester");
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => RequestorDashboard()),
+                );
+              },
+              child: const Text("Requester"),
+            ),
+          ],
+        ),
+      );
+    } else if (result == "Solver") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => SloverDashboard()),
+      );
+    } else if (result == "Requester") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => RequestorDashboard()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result ?? "Error")),
       );
     }
   }
@@ -113,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   "Login to continue solving tasks",
                   style: GoogleFonts.dmSans(
                     fontSize: 14,
-                    color: textColor.withOpacity(0.7),
+                    color: textColor.withValues(alpha: 0.7),
                   ),
                 ),
 
@@ -141,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           decoration: InputDecoration(
                             hintText: "Email",
                             hintStyle: TextStyle(
-                              color: textColor.withOpacity(0.5),
+                              color: textColor.withValues(alpha: 0.5),
                             ),
 
                             prefixIcon: const Icon(
@@ -182,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           decoration: InputDecoration(
                             hintText: "Password",
                             hintStyle: TextStyle(
-                              color: textColor.withOpacity(0.5),
+                              color: textColor.withValues(alpha: 0.5),
                             ),
 
                             prefixIcon: const Icon(
@@ -290,7 +352,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               "Don't have an account?",
 
                               style: GoogleFonts.dmSans(
-                                color: textColor.withOpacity(0.8),
+                                color: textColor.withValues(alpha: 0.8),
                               ),
                             ),
 
@@ -321,7 +383,44 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-                )
+                ),
+                Divider(color: Colors.blueGrey,),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: googleLogin,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Get.theme.cardColor,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        side: BorderSide(
+                          color: Get.theme.primaryColor.withValues(alpha: 0.2),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Bootstrap.google,
+                          color: Get.theme.primaryColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Continue with Google",
+                          style: TextStyle(
+                            color: Get.textTheme.bodyMedium?.color,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ),
+                const SizedBox(height: 10),
               ],
             ),
           ),

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-
+import 'package:fl_chart/fl_chart.dart';
 import '../../auth/loginScreen.dart';
 import '../../controller/pageChanger_controller.dart';
 import '../../controller/theme_controller.dart';
@@ -90,9 +90,14 @@ class RequestorDashboard extends StatelessWidget {
   }
 }
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
 
+  @override
+  State<HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<HomeContent> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -108,12 +113,13 @@ class HomeContent extends StatelessWidget {
         }
 
         final data = snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
-
+        final currentUid = FirebaseAuth.instance.currentUser!.uid;
         final requests = data.entries.map((e) {
           final value = Map<String, dynamic>.from(e.value);
           value['id'] = e.key;
           return value;
-        }).toList();
+        }).where((req) => req['uid'] == currentUid)
+            .toList();
 
         int total = requests.length;
         int inProgress = 0;
@@ -134,6 +140,40 @@ class HomeContent extends StatelessWidget {
             pendingList.add(r);
           }
         }
+        double _getMaxY(int total, int inProgress, int completed, int pending) {
+          final max = [total, inProgress, completed, pending].reduce((a, b) => a > b ? a : b);
+
+          if (max <= 5) return 6;
+          if (max <= 10) return 12;
+          if (max <= 20) return 25;
+
+          return (max * 1.2);
+        }
+
+        BarChartGroupData _bar(int x, int y, List<Color> gradientColors) {
+          return BarChartGroupData(
+            x: x,
+            barRods: [
+              BarChartRodData(
+                toY: y.toDouble(),
+                width: 22,
+                borderRadius: BorderRadius.circular(12),
+
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: gradientColors,
+                ),
+
+                backDrawRodData: BackgroundBarChartRodData(
+                  show: true,
+                  toY: y.toDouble(),
+                  color: Colors.grey.withValues(alpha: 0.1),
+                ),
+              ),
+            ],
+          );
+        }
 
         return SingleChildScrollView(
           child: Padding(
@@ -142,22 +182,132 @@ class HomeContent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: Get.theme.cardColor,
+                    borderRadius: BorderRadius.circular(22),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
 
-                GridView.count(
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
-                  children: [
-                    statCard("My Tasks", total.toString(), Get.theme.primaryColor, Icons.task_alt),
-                    statCard("In Progress", inProgress.toString(), Colors.orange, Icons.autorenew),
-                    statCard("Completed", completed.toString(), Colors.purpleAccent, Icons.check_circle),
-                    statCard("Pending", pending.toString(), Colors.red, Icons.pending),
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Task Insights",
+                            style: GoogleFonts.dmSans(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Get.textTheme.bodyMedium?.color,
+                            ),
+                          ),
+                          Icon(Icons.analytics, color: Get.theme.primaryColor)
+                        ],
+                      ),
+
+                      const SizedBox(height: 15),
+
+
+                      SizedBox(height: 200, child: SizedBox(
+                        height: 220,
+                        child: BarChart(
+                          BarChartData(
+                            alignment: BarChartAlignment.spaceAround,
+                            groupsSpace: 8,
+                            gridData: FlGridData(
+                              show: true,
+                              drawVerticalLine: false,
+                              horizontalInterval: 5,
+                              getDrawingHorizontalLine: (value) {
+                                return FlLine(
+                                  color: Colors.grey.withValues(alpha: 0.1),
+                                  strokeWidth: 1,
+                                );
+                              },
+                            ),
+
+                            borderData: FlBorderData(show: false),
+
+
+                            maxY: _getMaxY(total, inProgress, completed, pending),
+
+
+                            barTouchData: BarTouchData(
+                              touchTooltipData: BarTouchTooltipData(
+                                getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                                  return BarTooltipItem(
+                                    rod.toY.toInt().toString(),
+                                    TextStyle(
+                                      color: Get.textTheme.bodyMedium?.color,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+
+                            titlesData: FlTitlesData(
+
+                              leftTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: false,
+                                ),
+                              ),
+                              topTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              rightTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+
+                              bottomTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: (value, meta) {
+                                    final style = TextStyle(
+                                      color: Get.textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
+                                      fontSize: 12,
+                                    );
+
+                                    switch (value.toInt()) {
+                                      case 0:
+                                        return Text("All", style: style);
+                                      case 1:
+                                        return Text("Active", style: style);
+                                      case 2:
+                                        return Text("Done", style: style);
+                                      case 3:
+                                        return Text("Pending", style: style);
+                                    }
+                                    return const SizedBox();
+                                  },
+                                ),
+                              ),
+                            ),
+
+                            barGroups: [
+                              _bar(0, total, [Colors.blue, Colors.blueAccent]),
+                              _bar(1, inProgress, [Colors.orange, Colors.deepOrange]),
+                              _bar(2, completed, [Colors.green, Colors.teal]),
+                              _bar(3, pending, [Colors.red, Colors.pink]),
+                            ],
+                          ),
+                        ),
+                      ),),
+                    ],
+                  ),
                 ),
-
                 const SizedBox(height: 25),
 
                 Text(

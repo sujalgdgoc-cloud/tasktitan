@@ -116,7 +116,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   "Join TaskTitan to start solving or posting tasks",
                   style: GoogleFonts.dmSans(
                     fontSize: 14,
-                    color: textColor.withOpacity(0.7),
+                    color: textColor.withValues(alpha: 0.7),
                   ),
                 ),
 
@@ -143,7 +143,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           decoration: InputDecoration(
                             hintText: "Name",
                             hintStyle: TextStyle(
-                                color: textColor.withOpacity(0.5)
+                                color: textColor.withValues(alpha: 0.5)
                             ),
 
                             prefixIcon: const Icon(
@@ -177,7 +177,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           decoration: InputDecoration(
                             hintText: "Email",
                             hintStyle: TextStyle(
-                                color: textColor.withOpacity(0.5)
+                                color: textColor.withValues(alpha: 0.5)
                             ),
 
                             prefixIcon: const Icon(
@@ -219,7 +219,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                             hintText: "Password",
                             hintStyle: TextStyle(
-                                color: textColor.withOpacity(0.5)
+                                color: textColor.withValues(alpha: 0.5)
                             ),
 
                             prefixIcon: const Icon(
@@ -278,7 +278,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                             hintText: "Confirm Password",
                             hintStyle: TextStyle(
-                                color: textColor.withOpacity(0.5)
+                                color: textColor.withValues(alpha: 0.5)
                             ),
 
                             prefixIcon: const Icon(
@@ -330,7 +330,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                         DropdownButtonFormField(
 
-                          value: selectedRole,
+                          initialValue: selectedRole,
 
                           dropdownColor: const Color(0xFF1E293B),
 
@@ -412,14 +412,14 @@ class _SignInScreenState extends State<SignInScreen> {
                             Text(
                               "Already have an account?",
                               style: GoogleFonts.dmSans(
-                                color: textColor.withOpacity(0.8),
+                                color: textColor.withValues(alpha: 0.8),
                               ),
                             ),
 
                             TextButton(
 
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()));
                               },
 
                               child: Text(

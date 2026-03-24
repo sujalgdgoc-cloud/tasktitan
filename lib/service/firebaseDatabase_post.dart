@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -26,6 +27,7 @@ class RequestService {
         "timestamp": DateTime.now().toString(),
         "status": status,
         "bid": bid,
+        "uid": FirebaseAuth.instance.currentUser!.uid,
       });
 
       return newRequest.key;

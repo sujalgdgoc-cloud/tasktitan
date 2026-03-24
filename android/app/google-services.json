@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "999445358427",
+    "firebase_url": "https://tasktitan-4942a-default-rtdb.firebaseio.com",
     "project_id": "tasktitan-4942a",
     "storage_bucket": "tasktitan-4942a.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.task_titan"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "999445358427-nepfpikuvcalmh5m8drsro52d9217tq3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.task_titan",
+            "certificate_hash": "1b49dda57b52f3cc15c903961072979901b9c859"
+          }
+        },
+        {
+          "client_id": "999445358427-9dpc1o5508c9jng299322aecrs3acvq0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDf0jleS8Aua6x0kRo9kTmYEjXgLHQCiWo"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999445358427-9dpc1o5508c9jng299322aecrs3acvq0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "999445358427-roj7e2lp63evc5rhbq41p7g9lmf0oogk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.taskTitan"
+              }
+            }
+          ]
         }
       }
     }

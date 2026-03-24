@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_titan/service/firebaseDatabase_fetch.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:task_titan/service/launcher.dart';
 import 'package:get/get.dart';
+import '../../service/githubValidate.dart';
 import '../../service/progress_update_service.dart';
 
 class PostProgressReportScreen extends StatefulWidget {
   final String requestId;
 
-  const PostProgressReportScreen({
-    super.key,
-    required this.requestId,
-  });
+  const PostProgressReportScreen({super.key, required this.requestId});
 
   @override
   State<PostProgressReportScreen> createState() =>
       _PostProgressReportScreenState();
 }
 
-class _PostProgressReportScreenState
-    extends State<PostProgressReportScreen> {
+class _PostProgressReportScreenState extends State<PostProgressReportScreen> {
   final FetchRequest fetchRequest = FetchRequest();
+  final ProgressValidationService validationService =
+      ProgressValidationService();
+
+  final TextEditingController submittedLinkController = TextEditingController();
 
   String currentProgress = "pending";
   String title = "";
@@ -44,24 +45,61 @@ class _PostProgressReportScreenState
       githubLink = data["gitlink"] ?? "";
     });
   }
+  void launchUrl (){
+    Launcher().openGitHub(githubLink);
+  }
 
-  void update(String progress) {
+  void update(String progress) async {
     if (currentProgress == "done") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Task already completed")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Task already completed")));
       return;
     }
 
-    if (currentProgress == "processing" &&
-        progress == "processing") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Work already started")),
-      );
+    if (currentProgress == "processing" && progress == "processing") {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Work already started")));
       return;
     }
 
-    ProgressUpdateService().updateProgress(
+    if (progress == "processing") {
+      validationService.markStartTime();
+    }
+
+    if (progress == "done") {
+      final submittedLink = submittedLinkController.text.trim();
+
+      final error = await validationService.validateBeforeDone(
+        submittedLink: submittedLink,
+      );
+
+      if (error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error)));
+        return;
+      }
+
+      await ProgressUpdateService().updateProgress(
+        requestId: widget.requestId,
+        progress: progress,
+        submittedLink: submittedLink,
+      );
+
+      setState(() {
+        currentProgress = progress;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Task submitted successfully")),
+      );
+
+      return;
+    }
+
+    await ProgressUpdateService().updateProgress(
       requestId: widget.requestId,
       progress: progress,
     );
@@ -70,8 +108,34 @@ class _PostProgressReportScreenState
       currentProgress = progress;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Progress updated to $progress")),
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("Progress updated to $progress")));
+  }
+
+  Widget submissionField() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 18),
+      child: TextField(
+        controller: submittedLinkController,
+        style: GoogleFonts.dmSans(color: Get.textTheme.bodyMedium?.color),
+        decoration: InputDecoration(
+          hintText: "Paste your GitHub commit / PR link",
+          hintStyle: GoogleFonts.dmSans(
+            color: Get.textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
+          ),
+          filled: true,
+          fillColor: Get.theme.cardColor,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 14,
+          ),
+        ),
+      ),
     );
   }
 
@@ -118,17 +182,20 @@ class _PostProgressReportScreenState
                   Text(
                     subtitle,
                     style: GoogleFonts.dmSans(
-                      color: Get.textTheme.bodyMedium?.color
-                          ?.withValues(alpha: 0.7),
+                      color: Get.textTheme.bodyMedium?.color?.withValues(
+                        alpha: 0.7,
+                      ),
                       fontSize: 13,
                     ),
                   ),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios,
-                size: 16,
-                color: Get.textTheme.bodyMedium?.color)
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: Get.textTheme.bodyMedium?.color,
+            ),
           ],
         ),
       ),
@@ -147,18 +214,17 @@ class _PostProgressReportScreenState
         children: [
           if (imageUrl.isNotEmpty)
             ClipRRect(
-              borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(24)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
               child: Image.network(
                 imageUrl,
                 height: 180,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                const SizedBox(height: 180),
+                errorBuilder: (_, __, ___) => const SizedBox(height: 180),
               ),
             ),
-
           Padding(
             padding: const EdgeInsets.all(18),
             child: Column(
@@ -172,77 +238,57 @@ class _PostProgressReportScreenState
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 const SizedBox(height: 8),
-
                 Text(
                   description,
                   style: GoogleFonts.dmSans(
-                    color: Get.textTheme.bodyMedium?.color
-                        ?.withValues(alpha: 0.7),
+                    color: Get.textTheme.bodyMedium?.color?.withValues(
+                      alpha: 0.7,
+                    ),
                     fontSize: 14,
                   ),
                 ),
+                const SizedBox(height: 12),
 
-                const SizedBox(height: 14),
-
-                InkWell(
-                  onTap: () async {
-                    if (githubLink.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("No GitHub link provided")),
-                      );
-                      return;
-                    }
-
-                    final uri = Uri.tryParse(githubLink);
-
-                    if (uri == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Invalid URL")),
-                      );
-                      return;
-                    }
-
-                    try {
-                      final success = await launchUrl(
-                        uri,
-                        mode: LaunchMode.externalApplication,
-                      );
-
-                      if (!success) {
-                        throw "Could not launch";
-                      }
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Cannot open link")),
-                      );
-                    }
-                  },
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Get.theme.primaryColor.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.code,
-                            color: Get.theme.primaryColor),
-                        const SizedBox(width: 10),
-                        Text(
-                          "View GitHub Repo",
-                          style: GoogleFonts.dmSans(
+                if (githubLink.isNotEmpty)
+                  InkWell(
+                    onTap: launchUrl,
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Get.theme.primaryColor.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.link,
                             color: Get.theme.primaryColor,
-                            fontWeight: FontWeight.w600,
+                            size: 18,
                           ),
-                        )
-                      ],
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              "View GitHub Repository",
+                              style: GoogleFonts.dmSans(
+                                color: Get.theme.primaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            Icons.open_in_new,
+                            size: 16,
+                            color: Get.theme.primaryColor,
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
@@ -273,10 +319,11 @@ class _PostProgressReportScreenState
             children: [
               taskDetailsCard(),
 
+              submissionField(),
+
               progressCard(
                 title: "Start Work",
-                subtitle:
-                "Mark that you started working on this task",
+                subtitle: "Mark that you started working on this task",
                 icon: Icons.play_arrow,
                 color: Get.theme.primaryColor,
                 onTap: () => update("processing"),

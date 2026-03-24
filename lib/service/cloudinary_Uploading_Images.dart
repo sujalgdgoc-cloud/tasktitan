@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:cloudinary_url_gen/cloudinary.dart';
+
 
 class CloudinaryUploader {
   static final cloudinary = CloudinaryPublic("dx2psg6mh", "tasktitan_images",

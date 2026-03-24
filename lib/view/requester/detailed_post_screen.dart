@@ -10,7 +10,8 @@ class DetailedPostScreen extends StatelessWidget {
 
   Widget inputField(
       TextEditingController controllerField,
-      String label, {
+      String label,
+      IconData icon, {
         int maxLines = 1,
         String? Function(String?)? validator,
       }) {
@@ -21,13 +22,17 @@ class DetailedPostScreen extends StatelessWidget {
         maxLines: maxLines,
         style: TextStyle(color: Get.textTheme.bodyMedium?.color),
         decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: Get.theme.primaryColor),
           labelText: label,
           labelStyle:
           TextStyle(color: Get.textTheme.bodyMedium?.color),
           filled: true,
           fillColor: Get.theme.cardColor,
+          contentPadding:
+          const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide.none,
           ),
         ),
         validator: validator ??
@@ -43,18 +48,19 @@ class DetailedPostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Get.theme.scaffoldBackgroundColor,
 
       appBar: AppBar(
         backgroundColor: Get.theme.scaffoldBackgroundColor,
         elevation: 0,
+        centerTitle: true,
         title: Text(
           "Create Request",
           style: TextStyle(
             color: Get.textTheme.bodyMedium?.color,
             fontWeight: FontWeight.bold,
+            fontSize: 20,
           ),
         ),
       ),
@@ -64,21 +70,41 @@ class DetailedPostScreen extends StatelessWidget {
         child: Form(
           key: controller.formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
+              Text(
+                "Upload Cover",
+                style: TextStyle(
+                  color: Get.textTheme.bodyMedium?.color,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+
+              const SizedBox(height: 10),
 
               GestureDetector(
                 onTap: controller.pickerImg,
                 child: Obx(
-                      () => Container(
-                    height: 180,
+                      () => AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    height: 190,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(20),
                       color: Get.theme.cardColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.2),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        )
+                      ],
                     ),
                     child: controller.selectedImg.value != null
                         ? ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(20),
                       child: Image.file(
                         controller.selectedImg.value!,
                         fit: BoxFit.cover,
@@ -89,9 +115,9 @@ class DetailedPostScreen extends StatelessWidget {
                       MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.cloud_upload,
-                          size: 40,
-                          color: Get.theme.iconTheme.color,
+                          Icons.add_photo_alternate_outlined,
+                          size: 45,
+                          color: Get.theme.primaryColor,
                         ),
                         const SizedBox(height: 10),
                         Text(
@@ -104,9 +130,8 @@ class DetailedPostScreen extends StatelessWidget {
                         ),
                         if (controller.isUploadingImage.value)
                           const Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child:
-                            CircularProgressIndicator(),
+                            padding: EdgeInsets.only(top: 12),
+                            child: CircularProgressIndicator(),
                           ),
                       ],
                     ),
@@ -114,55 +139,72 @@ class DetailedPostScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 30),
 
-              inputField(controller.titleController, "Title"),
+              inputField(
+                controller.titleController,
+                "Title",
+                Icons.title,
+              ),
 
               inputField(
                 controller.descriptionController,
                 "Description",
+                Icons.description_outlined,
                 maxLines: 4,
               ),
 
               inputField(
                 controller.gitController,
                 "GitHub Link",
+                Icons.link,
                 validator: controller.validateGitHub,
               ),
 
               inputField(
                 controller.bidController,
                 "Initial Bid",
+                Icons.currency_rupee,
                 validator: controller.validateBid,
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
 
               SizedBox(
                 width: double.infinity,
-                height: 55,
+                height: 60,
                 child: Obx(
                       () => ElevatedButton(
                     onPressed: controller.isSubmitting.value
                         ? null
                         : controller.submitRequest,
                     style: ElevatedButton.styleFrom(
+                      elevation: 6,
                       backgroundColor: Get.theme.primaryColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(40),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                     child: controller.isSubmitting.value
                         ? const CircularProgressIndicator(
                       color: Colors.white,
                     )
-                        : Text(
-                      "Submit Request",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                        : Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.send,
+                            color: Colors.white),
+                        const SizedBox(width: 10),
+                        const Text(
+                          "Submit Request",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

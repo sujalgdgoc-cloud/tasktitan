@@ -105,26 +105,29 @@ class _DetailedFetchScreenState extends State<DetailedFetchScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(20),
-                  ),
-                  child: data['imageUrl'] != null
-                      ? Image.network(
-                    data['imageUrl'],
-                    height: 220,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  )
-                      : Container(
-                    height: 220,
-                    width: double.infinity,
-                    color: Get.theme.cardColor,
-                    child: Center(
-                      child: Icon(
-                        Icons.image_not_supported,
-                        size: 50,
-                        color: Get.iconColor,
+                Hero(
+                  tag: "IntoAnim",
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(20),
+                    ),
+                    child: data['imageUrl'] != null
+                        ? Image.network(
+                      data['imageUrl'],
+                      height: 220,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                        : Container(
+                      height: 220,
+                      width: double.infinity,
+                      color: Get.theme.cardColor,
+                      child: Center(
+                        child: Icon(
+                          Icons.image_not_supported,
+                          size: 50,
+                          color: Get.iconColor,
+                        ),
                       ),
                     ),
                   ),

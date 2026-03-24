@@ -125,7 +125,7 @@ class _FetchProgressScreenState extends State<FetchProgressScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final event = snapshot.data as DatabaseEvent; //doubt
+          final event = snapshot.data as DatabaseEvent;
           final progress = (event.snapshot.value ?? "pending").toString();
 
           return Center(

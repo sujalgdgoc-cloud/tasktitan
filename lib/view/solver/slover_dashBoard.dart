@@ -145,12 +145,15 @@ class _SloverDashboardState extends State<SloverDashboard> {
                     );
                   },
 
-                  child: ReusableCard(
-                    imageUrl: imageUrl,
-                    title: title,
-                    description: description,
-                    bid: bid,
-                    timeStamp: status,
+                  child: Hero(
+                    tag: "IntoAnim",
+                    child: ReusableCard(
+                      imageUrl: imageUrl,
+                      title: title,
+                      description: description,
+                      bid: bid,
+                      timeStamp: status,
+                    ),
                   ),
                 ),
               );
