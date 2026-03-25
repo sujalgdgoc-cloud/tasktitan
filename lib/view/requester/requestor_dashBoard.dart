@@ -296,8 +296,7 @@ class _HomeContentState extends State<HomeContent> {
                               ),
                             ),
 
-                            barGroups: [
-                              _bar(0, total, [Colors.blue, Colors.blueAccent]),
+                            barGroups: [                              _bar(0, total, [Colors.blue, Colors.blueAccent]),
                               _bar(1, inProgress, [Colors.orange, Colors.deepOrange]),
                               _bar(2, completed, [Colors.green, Colors.teal]),
                               _bar(3, pending, [Colors.red, Colors.pink]),
