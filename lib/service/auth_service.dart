@@ -107,4 +107,28 @@ class AuthService {
       'role': role,
     });
   }
+  Future<void> forgotPass(String email) async{
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+  Future<Map<String, dynamic>?> getUserData() async {
+    try {
+      final user = _auth.currentUser;
+
+      if (user == null) return null;
+
+      final doc = await _firestore
+          .collection("users")
+          .doc(user.uid)
+          .get();
+
+      if (!doc.exists) return null;
+
+      return {
+        "role": doc['role'],
+        "profileCompleted": doc['profileCompleted'] ?? true,
+      };
+    } catch (e) {
+      return null;
+    }
+  }
 }

@@ -295,7 +295,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           alignment: Alignment.centerRight,
 
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _authService.forgotPass(email.text);
+                            },
 
                             child: Text(
                               "Forgot Password?",
@@ -350,7 +352,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             Text(
                               "Don't have an account?",
-
                               style: GoogleFonts.dmSans(
                                 color: textColor.withValues(alpha: 0.8),
                               ),
